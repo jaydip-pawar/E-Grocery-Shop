@@ -1,29 +1,45 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_grocery/model/store_services.dart';
 import 'package:e_grocery/providers/store_provider.dart';
+import 'package:e_grocery/screens/vendor_home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
 class TopPickStore extends StatefulWidget {
-  const TopPickStore({Key key}) : super(key: key);
 
   @override
   _TopPickStoreState createState() => _TopPickStoreState();
 }
 
 class _TopPickStoreState extends State<TopPickStore> {
-  StoreServices _storeServices = StoreServices();
+
+  double latitude = 0.0;
+  double longitude = 0.0;
+
+  @override
+  void didChangeDependencies() {
+    final _storeData = Provider.of<StoreProvider>(context);
+    _storeData.determinePosition().then((position) {
+      setState(() {
+        latitude = position.latitude;
+        longitude = position.longitude;
+      });
+    });
+    super.didChangeDependencies();
+  }
 
   @override
   Widget build(BuildContext context) {
     final _storeData = Provider.of<StoreProvider>(context);
+    StoreServices _storeServices = StoreServices();
     _storeData.getUserLocationData();
 
     String getDistance(location) {
       var distance = Geolocator.distanceBetween(
-        _storeData.userLatitude,
-        _storeData.userLongitude,
+        latitude,
+        longitude,
         location.latitude,
         location.longitude,
       );
@@ -36,16 +52,12 @@ class _TopPickStoreState extends State<TopPickStore> {
         stream: _storeServices.getTopPickedStore(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData)
-            return SizedBox(
-              height: 30,
-              width: 30,
-              child: CircularProgressIndicator(),
-            );
+            return Center(child: SizedBox(height: 30, width: 30, child: CircularProgressIndicator()));
           List shopDistance = [];
           for (int i = 0; i <= snapshot.data.docs.length - 1; i++) {
             var distance = Geolocator.distanceBetween(
-              _storeData.userLatitude,
-              _storeData.userLongitude,
+              latitude,
+              longitude,
               snapshot.data.docs[i]['location'].latitude,
               snapshot.data.docs[i]['location'].longitude,
             );
@@ -81,15 +93,23 @@ class _TopPickStoreState extends State<TopPickStore> {
                       ],
                     ),
                   ),
-                  Container(
-                    child: Flexible(
-                      child: ListView(
-                        scrollDirection: Axis.horizontal,
-                        children:
-                            snapshot.data.docs.map((DocumentSnapshot document) {
-                          if (double.parse(getDistance(document['location'])) <=
-                              10) {
-                            return Padding(
+                  Flexible(
+                    child: ListView(
+                      scrollDirection: Axis.horizontal,
+                      children: snapshot.data.docs.map((DocumentSnapshot document) {
+                        if (double.parse(getDistance(document['location'])) <=
+                            10) {
+                          return InkWell(
+                            onTap: (){
+                              _storeData.getSelectedStore(document);
+                              pushNewScreen(
+                                context,
+                                screen: VendorHomeScreen(),
+                                withNavBar: true,
+                                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                              );
+                            },
+                            child: Padding(
                               padding: const EdgeInsets.all(4.0),
                               child: Container(
                                 width: 80,
@@ -132,12 +152,12 @@ class _TopPickStoreState extends State<TopPickStore> {
                                   ],
                                 ),
                               ),
-                            );
-                          } else {
-                            return Container();
-                          }
-                        }).toList(),
-                      ),
+                            ),
+                          );
+                        } else {
+                          return Container();
+                        }
+                      }).toList(),
                     ),
                   ),
                 ],
@@ -149,3 +169,4 @@ class _TopPickStoreState extends State<TopPickStore> {
     );
   }
 }
+//14.58

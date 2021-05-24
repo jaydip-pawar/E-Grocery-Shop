@@ -44,6 +44,8 @@ class _MyAppBarState extends State<MyAppBar> {
     return SliverAppBar(
       automaticallyImplyLeading: false,
       elevation: 2,
+      floating: true,
+      snap: true,
       title: TextButton(
         onPressed: () {
           locationData.getCurrentPosition();

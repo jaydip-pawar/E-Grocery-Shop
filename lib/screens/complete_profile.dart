@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:e_grocery/preferences/utility.dart';
 import 'package:e_grocery/providers/authentication_provider.dart';
-import 'package:e_grocery/screens/home_page.dart';
+import 'package:e_grocery/screens/home_screen.dart';
 import 'package:e_grocery/screens/login_screen.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_grocery/screens/complete_profile.dart';
-import 'package:e_grocery/screens/home_page.dart';
 import 'package:e_grocery/screens/login_screen.dart';
 import 'package:e_grocery/screens/main_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';

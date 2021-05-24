@@ -1,5 +1,5 @@
 import 'package:e_grocery/screens/favourite_screen.dart';
-import 'package:e_grocery/screens/home_page.dart';
+import 'package:e_grocery/screens/home_screen.dart';
 import 'package:e_grocery/screens/my_orders_screen.dart';
 import 'package:e_grocery/screens/profile_screen.dart';
 import 'package:flutter/cupertino.dart';

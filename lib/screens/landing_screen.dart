@@ -1,6 +1,6 @@
 import 'package:e_grocery/model/user_services.dart';
 import 'package:e_grocery/providers/location_provider.dart';
-import 'package:e_grocery/screens/home_page.dart';
+import 'package:e_grocery/screens/home_screen.dart';
 import 'package:e_grocery/screens/map_screen.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -93,7 +93,11 @@ class _LandingScreenState extends State<LandingScreen> {
                 ),
               ),
             ),
-            CircularProgressIndicator(),
+            SizedBox(
+              height: 35,
+              width: 35,
+              child: CircularProgressIndicator(),
+            ),
             Container(
               width: 600,
               child: Image.asset(
