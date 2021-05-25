@@ -1,4 +1,5 @@
 import 'package:e_grocery/widgets/categories_widget.dart';
+import 'package:e_grocery/widgets/products/featured_products.dart';
 import 'package:e_grocery/widgets/vendor_appbar.dart';
 import 'package:e_grocery/widgets/vendor_banner.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,10 +17,13 @@ class VendorHomeScreen extends StatelessWidget {
             VendorAppBar(),
           ];
         },
-        body: Column(
+        body: ListView(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
           children: [
             VendorBanner(),
-            Expanded(child: VendorCategories()),
+            VendorCategories(),
+            FeaturedProducts(),
           ],
         )
       ),
