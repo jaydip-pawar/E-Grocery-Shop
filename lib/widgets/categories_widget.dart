@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_grocery/model/product_services.dart';
 import 'package:e_grocery/providers/store_provider.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -77,7 +78,7 @@ class _VendorCategoriesState extends State<VendorCategories> {
                         ],
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
-                        fontSize: 30
+                        fontSize: 25
                       ),),
                     ),
                   ),
@@ -99,6 +100,7 @@ class _VendorCategoriesState extends State<VendorCategories> {
                             )
                           ),
                           child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Center(
                                 child: Image.network(document.data()['image']),
