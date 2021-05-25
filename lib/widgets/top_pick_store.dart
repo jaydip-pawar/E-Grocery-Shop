@@ -30,29 +30,30 @@ class _TopPickStoreState extends State<TopPickStore> {
     super.didChangeDependencies();
   }
 
+  String getDistance(location) {
+    var distance = Geolocator.distanceBetween(
+      latitude,
+      longitude,
+      location.latitude,
+      location.longitude,
+    );
+    var distanceInKm = distance / 1000;
+    return distanceInKm.toStringAsFixed(2);
+  }
+
   @override
   Widget build(BuildContext context) {
     final _storeData = Provider.of<StoreProvider>(context);
     StoreServices _storeServices = StoreServices();
-    _storeData.getUserLocationData();
-
-    String getDistance(location) {
-      var distance = Geolocator.distanceBetween(
-        latitude,
-        longitude,
-        location.latitude,
-        location.longitude,
-      );
-      var distanceInKm = distance / 1000;
-      return distanceInKm.toStringAsFixed(2);
-    }
+    // _storeData.getUserLocationData();
 
     return Container(
       child: StreamBuilder<QuerySnapshot>(
         stream: _storeServices.getTopPickedStore(),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           if (!snapshot.hasData)
-            return Center(child: SizedBox(height: 30, width: 30, child: CircularProgressIndicator()));
+            return Center(child: SizedBox(
+                height: 30, width: 30, child: CircularProgressIndicator()));
           List shopDistance = [];
           for (int i = 0; i <= snapshot.data.docs.length - 1; i++) {
             var distance = Geolocator.distanceBetween(
@@ -96,17 +97,19 @@ class _TopPickStoreState extends State<TopPickStore> {
                   Flexible(
                     child: ListView(
                       scrollDirection: Axis.horizontal,
-                      children: snapshot.data.docs.map((DocumentSnapshot document) {
+                      children: snapshot.data.docs.map((
+                          DocumentSnapshot document) {
                         if (double.parse(getDistance(document['location'])) <=
                             10) {
                           return InkWell(
-                            onTap: (){
+                            onTap: () {
                               _storeData.getSelectedStore(document);
                               pushNewScreen(
                                 context,
                                 screen: VendorHomeScreen(),
                                 withNavBar: true,
-                                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+                                pageTransitionAnimation: PageTransitionAnimation
+                                    .cupertino,
                               );
                             },
                             child: Padding(
@@ -122,7 +125,7 @@ class _TopPickStoreState extends State<TopPickStore> {
                                       child: Card(
                                         child: ClipRRect(
                                           borderRadius:
-                                              BorderRadius.circular(4),
+                                          BorderRadius.circular(4),
                                           child: Image.network(
                                             document['profile_pic'],
                                             fit: BoxFit.cover,
@@ -169,4 +172,3 @@ class _TopPickStoreState extends State<TopPickStore> {
     );
   }
 }
-//14.58
