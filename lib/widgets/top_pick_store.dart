@@ -103,7 +103,7 @@ class _TopPickStoreState extends State<TopPickStore> {
                             10) {
                           return InkWell(
                             onTap: () {
-                              _storeData.getSelectedStore(document);
+                              _storeData.getSelectedStore(document, getDistance(document['location']));
                               pushNewScreen(
                                 context,
                                 screen: VendorHomeScreen(),
