@@ -97,6 +97,7 @@ class _VendorCategoriesState extends State<VendorCategories> {
                       InkWell(
                         onTap: () {
                           _storeProvider.selectedCategory(document.data()['name']);
+                          _storeProvider.selectedCategorySub(null);
                           pushNewScreen(
                             context,
                             screen: ProductListScreen(),

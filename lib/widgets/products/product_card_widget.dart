@@ -39,6 +39,7 @@ class ProductCard extends StatelessWidget {
                     ),
                   ),
                 ),
+                if(document.data()['comparedPrice'] > 0)
                 Container(
                   decoration: BoxDecoration(
                     color: Theme.of(context).primaryColor,

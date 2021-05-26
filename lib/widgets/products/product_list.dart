@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_grocery/model/product_services.dart';
 import 'package:e_grocery/providers/store_provider.dart';
 import 'package:e_grocery/widgets/products/product_card_widget.dart';
+import 'package:e_grocery/widgets/products/product_filter_widget.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -16,15 +17,16 @@ class ProductListWidget extends StatelessWidget {
     return FutureBuilder<QuerySnapshot>(
       future: _services.products
           .where('published', isEqualTo: true)
-          .where('category.mainCategory',
-              isEqualTo: _storeProvider.selectedProductCategory)
+          .where('category.mainCategory', isEqualTo: _storeProvider.selectedProductCategory)
+          .where('category.subCategory', isEqualTo: _storeProvider.selectedSubCategory)
+          .where('seller.sellerUid', isEqualTo: _storeProvider.storedetails['uid'])
           .get(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
           return Text('Something went wrong');
         }
 
-        if (snapshot.connectionState == ConnectionState.waiting) {
+        if (!snapshot.hasData) {
           return Center(
             child: CircularProgressIndicator(),
           );
@@ -36,69 +38,6 @@ class ProductListWidget extends StatelessWidget {
 
         return Column(
           children: [
-            Container(
-              height: 50,
-              color: Colors.grey,
-              child: Padding(
-                padding: const EdgeInsets.only(left: 8, right: 8),
-                child: ListView(
-                  padding: EdgeInsets.zero,
-                  scrollDirection: Axis.horizontal,
-                  children: [
-                    Padding(
-                      padding: const EdgeInsets.only(left: 6, right: 2),
-                      child: Chip(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        label: Text("Sub Category"),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 6, right: 2),
-                      child: Chip(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        label: Text("Sub Category"),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 6, right: 2),
-                      child: Chip(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        label: Text("Sub Category"),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 6, right: 2),
-                      child: Chip(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        label: Text("Sub Category"),
-                      ),
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 6, right: 2),
-                      child: Chip(
-                        backgroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(4),
-                        ),
-                        label: Text("Sub Category"),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
             Container(
               width: MediaQuery.of(context).size.width,
               height: 45,
