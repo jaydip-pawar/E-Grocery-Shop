@@ -3,8 +3,8 @@ import 'package:e_grocery/model/product_services.dart';
 import 'package:e_grocery/widgets/products/product_card_widget.dart';
 import 'package:flutter/material.dart';
 
-class FeaturedProducts extends StatelessWidget {
-  const FeaturedProducts({Key key}) : super(key: key);
+class RecentlyAddedProduct extends StatelessWidget {
+  const RecentlyAddedProduct({Key key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -13,7 +13,7 @@ class FeaturedProducts extends StatelessWidget {
     return FutureBuilder<QuerySnapshot>(
       future: _services.products
           .where('published', isEqualTo: true)
-          .where('collection', isEqualTo: 'Featured Products')
+          .where('collection', isEqualTo: 'Recently Added')
           .get(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
         if (snapshot.hasError) {
@@ -45,7 +45,7 @@ class FeaturedProducts extends StatelessWidget {
                     borderRadius: BorderRadius.circular(4),
                   ),
                   child: Center(
-                    child: Text("Featured Products", style: TextStyle(
+                    child: Text("Recently Added", style: TextStyle(
                         shadows: <Shadow> [
                           Shadow(
                               offset: Offset(2.0, 2.0),

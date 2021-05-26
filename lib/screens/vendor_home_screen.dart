@@ -1,5 +1,7 @@
 import 'package:e_grocery/widgets/categories_widget.dart';
+import 'package:e_grocery/widgets/products/best_selling_product.dart';
 import 'package:e_grocery/widgets/products/featured_products.dart';
+import 'package:e_grocery/widgets/products/recently_added_products.dart';
 import 'package:e_grocery/widgets/vendor_appbar.dart';
 import 'package:e_grocery/widgets/vendor_banner.dart';
 import 'package:flutter/cupertino.dart';
@@ -23,7 +25,9 @@ class VendorHomeScreen extends StatelessWidget {
           children: [
             VendorBanner(),
             VendorCategories(),
+            RecentlyAddedProduct(),
             FeaturedProducts(),
+            BestSellingProduct(),
           ],
         )
       ),

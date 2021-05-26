@@ -1,8 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_grocery/model/product_services.dart';
 import 'package:e_grocery/providers/store_provider.dart';
+import 'package:e_grocery/screens/product_list_screen.dart';
+import 'package:e_grocery/widgets/products/product_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
 class VendorCategories extends StatefulWidget {
@@ -37,6 +40,9 @@ class _VendorCategoriesState extends State<VendorCategories> {
 
   @override
   Widget build(BuildContext context) {
+
+    var _storeProvider = Provider.of<StoreProvider>(context);
+
     return FutureBuilder(
       future: _services.category.get(),
       builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -88,28 +94,40 @@ class _VendorCategoriesState extends State<VendorCategories> {
                 direction: Axis.horizontal,
                 children: snapshot.data.docs.map((DocumentSnapshot document) {
                   return _catList.contains(document.data()['name']) ?
-                      Container(
-                        width: 120,
-                        height: 150,
+                      InkWell(
+                        onTap: () {
+                          _storeProvider.selectedCategory(document.data()['name']);
+                          pushNewScreen(
+                            context,
+                            screen: ProductListScreen(),
+                            withNavBar: true,
+                            pageTransitionAnimation: PageTransitionAnimation
+                                .cupertino,
+                          );
+                        },
                         child: Container(
-                          decoration: BoxDecoration(
-                            color: Colors.white,
-                            border: Border.all(
-                              color: Colors.grey,
-                              width: .5
-                            )
-                          ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Center(
-                                child: Image.network(document.data()['image']),
-                              ),
-                              Padding(
-                                padding: const EdgeInsets.only(left: 8, right: 8),
-                                child: Text(document.data()['name'], textAlign: TextAlign.center,),
+                          width: 120,
+                          height: 150,
+                          child: Container(
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              border: Border.all(
+                                color: Colors.grey,
+                                width: .5
                               )
-                            ],
+                            ),
+                            child: Column(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Center(
+                                  child: Image.network(document.data()['image']),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 8, right: 8),
+                                  child: Text(document.data()['name'], textAlign: TextAlign.center,),
+                                )
+                              ],
+                            ),
                           ),
                         ),
                       ) : Text('');
