@@ -5,6 +5,7 @@ import 'package:e_grocery/screens/splash_screen.dart';
 import 'package:e_grocery/theme.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:provider/provider.dart';
 
 void main() {
@@ -49,6 +50,7 @@ class _MyAppState extends State<MyApp> {
       title: 'E-Grocery',
       theme: theme(),
       home: SplashScreen(),
+      builder: EasyLoading.init(),
     );
   }
 }

@@ -90,7 +90,7 @@ class _NearByStoreState extends State<NearByStore> {
                               style: TextStyle(color: Colors.black54),
                             ),
                             Text(
-                              "Jaydip",
+                              "Prajyot",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 letterSpacing: 2,
@@ -260,7 +260,7 @@ class _NearByStoreState extends State<NearByStore> {
                                       style: TextStyle(color: Colors.black54),
                                     ),
                                     Text(
-                                      "Jaydip",
+                                      "Prajyot",
                                       style: TextStyle(
                                         fontWeight: FontWeight.bold,
                                         letterSpacing: 2,
