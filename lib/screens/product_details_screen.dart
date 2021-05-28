@@ -1,9 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:e_grocery/widgets/products/bottom_sheet_container.dart';
 import 'package:expandable_text/expandable_text.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_easyloading/flutter_easyloading.dart';
 
 class ProductDetailsScreen extends StatelessWidget {
   final DocumentSnapshot document;
@@ -18,73 +18,11 @@ class ProductDetailsScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         actions: [
-          IconButton(icon: Icon(CupertinoIcons.search), onPressed: () {}),
+          IconButton(icon: Icon(CupertinoIcons.search), onPressed: () {
+          }),
         ],
       ),
-      bottomSheet: Container(
-        child: Row(
-          children: [
-            Expanded(
-              child: InkWell(
-                onTap: () {
-                  EasyLoading.show(status: 'Saving');
-                  saveForLater().then((value) {
-                    EasyLoading.showSuccess('Saved Successfully');
-                  });
-                },
-                child: Container(
-                  height: 56,
-                  color: Colors.grey[800],
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(CupertinoIcons.bookmark, color: Colors.white,),
-                          SizedBox(width: 10,),
-                          Text(
-                            'Save for later',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            Expanded(
-              child: Container(
-                height: 56,
-                color: Colors.red[400],
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Icon(Icons.shopping_basket_outlined, color: Colors.white,),
-                        SizedBox(width: 10,),
-                        Text(
-                          'Add to basket',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-          ],
-        ),
-      ),
+      bottomSheet: BottomSheetContainer(document),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView(
@@ -168,11 +106,8 @@ class ProductDetailsScreen extends StatelessWidget {
             ),
             Padding(
               padding: const EdgeInsets.all(20.0),
-              child: Hero(
-                tag: 'product${document.data()['productName']}',
-                child: Image.network(
-                  document.data()['productImage'],
-                ),
+              child: Image.network(
+                document.data()['productImage'],
               ),
             ),
             Divider(
