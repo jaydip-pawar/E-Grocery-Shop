@@ -19,7 +19,7 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
   User user = FirebaseAuth.instance.currentUser;
   bool _loading = true;
   bool _exist = false;
-  int _qty;
+  int _qty = 1;
   String _docId;
 
   @override
@@ -80,9 +80,7 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
               )
             : InkWell(
                 onTap: () {
-                  EasyLoading.show(
-                      status: 'Adding to Cart',
-                      maskType: EasyLoadingMaskType.none);
+                  EasyLoading.show(status: 'Adding to Cart');
                   _cart.addToCart(widget.document).then((value) {
                     setState(() {
                       _exist = true;

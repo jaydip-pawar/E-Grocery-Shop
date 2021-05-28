@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_grocery/screens/product_details_screen.dart';
+import 'package:e_grocery/widgets/cart/counter.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 
@@ -152,25 +153,9 @@ class ProductCard extends StatelessWidget {
                               child: Row(
                                 mainAxisAlignment: MainAxisAlignment.end,
                                 children: [
-                                  Card(
-                                    color: Colors.pink,
-                                    child: Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 30,
-                                          right: 30,
-                                          top: 7,
-                                          bottom: 7),
-                                      child: Text(
-                                        "Add",
-                                        style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.white,
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  CounterForCard(document),
                                 ],
-                              ),
+                              )
                             ),
                           ],
                         ),
