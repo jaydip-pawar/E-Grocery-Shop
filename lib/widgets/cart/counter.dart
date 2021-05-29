@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_grocery/model/cart_services.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 
@@ -22,9 +23,7 @@ class _CounterForCardState extends State<CounterForCard> {
   String _docId;
   bool _updating = false;
 
-  getCartData() {
-
-  }
+  getCartData() {}
 
   @override
   void initState() {
@@ -34,7 +33,6 @@ class _CounterForCardState extends State<CounterForCard> {
 
   @override
   Widget build(BuildContext context) {
-
     FirebaseFirestore.instance
         .collection('cart')
         .doc(user.uid)
@@ -42,16 +40,16 @@ class _CounterForCardState extends State<CounterForCard> {
         .where('productId', isEqualTo: widget.document.data()['productId'])
         .get()
         .then((QuerySnapshot querySnapshot) => {
-      querySnapshot.docs.forEach((doc) {
-        if (doc['productId'] == widget.document.data()['productId']) {
-          setState(() {
-            _exists = true;
-            _qty = doc["qty"];
-            _docId = doc.id;
-          });
-        }
-      }),
-    });
+              querySnapshot.docs.forEach((doc) {
+                if (doc['productId'] == widget.document.data()['productId']) {
+                  setState(() {
+                    _exists = true;
+                    _qty = doc["qty"];
+                    _docId = doc.id;
+                  });
+                }
+              }),
+            });
 
     return _exists
         ? Container(
@@ -142,11 +140,32 @@ class _CounterForCardState extends State<CounterForCard> {
         : InkWell(
             onTap: () {
               EasyLoading.show(status: 'Adding to Cart');
-              _cart.addToCart(widget.document).then((value) {
-                setState(() {
-                  _exists = true;
-                });
-                EasyLoading.showSuccess('Added to Cart');
+              _cart.checkSeller().then((shopName) {
+                if (shopName == widget.document.data()['seller']['shopName']) {
+                  setState(() {
+                    _exists = true;
+                  });
+                  _cart.addToCart(widget.document).then((value) {
+                    EasyLoading.showSuccess('Added to Cart');
+                  });
+                  return;
+                } else {
+                  EasyLoading.dismiss();
+                  // showDialog(shopName);
+                }
+                if (shopName == null) {
+                  setState(() {
+                    _exists = true;
+                  });
+                  _cart.addToCart(widget.document).then((value) {
+                    EasyLoading.showSuccess('Added to Cart');
+                  });
+                  return;
+                }
+                if (shopName != widget.document.data()['seller']['shopName']) {
+                  EasyLoading.dismiss();
+                  showDialog(shopName);
+                }
               });
             },
             child: Container(
@@ -163,5 +182,49 @@ class _CounterForCardState extends State<CounterForCard> {
               ),
             ),
           );
+  }
+
+  showDialog(shopName) {
+    showCupertinoDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: Text('Replace Cart Item?'),
+          content: Text(
+              'Your cart contains items from $shopName. Do you want to discard the selection and add items from ${widget.document.data()['seller']['shopName']}'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+              },
+              child: Text(
+                'No',
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.pop(context);
+                _cart.deleteCart().then((value) {
+                  _cart.addToCart(widget.document).then((value) {
+                    setState(() {
+                      _exists = true;
+                    });
+                  });
+                });
+              },
+              child: Text(
+                'Yes',
+                style: TextStyle(
+                    color: Theme.of(context).primaryColor,
+                    fontWeight: FontWeight.bold),
+              ),
+            )
+          ],
+        );
+      },
+    );
   }
 }
