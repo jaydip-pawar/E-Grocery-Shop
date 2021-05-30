@@ -15,15 +15,17 @@ class CartServices {
     return cart.doc(user.uid).collection('products').add({
       'productId': document.data()['productId'],
       'productName': document.data()['productName'],
+      'productImage': document.data()['productImage'],
       'weight': document.data()['weight'],
       'price': document.data()['price'],
       'comparedPrice': document.data()['comparedPrice'],
       'sku': document.data()['sku'],
       'qty': 1,
+      'total': document.data()['price'],
     });
   }
 
-  Future<void> updateCartQty(docId, qty) async {
+  Future<void> updateCartQty(docId, qty, total) async {
     DocumentReference documentReference = FirebaseFirestore.instance
         .collection('cart')
         .doc(user.uid)
@@ -38,7 +40,10 @@ class CartServices {
             throw Exception("Product does not exist in cart!");
           }
 
-          transaction.update(documentReference, {'qty': qty});
+          transaction.update(documentReference, {
+            'qty': qty,
+            'total' : total,
+          });
 
           return qty;
         })
@@ -52,13 +57,14 @@ class CartServices {
 
   Future<void> checkData() async {
     final snapshot = await cart.doc(user.uid).collection('products').get();
-    if(snapshot.docs.length == 0) {
+    if (snapshot.docs.length == 0) {
       cart.doc(user.uid).delete();
     }
   }
 
   Future<void> deleteCart() async {
-    final result = await cart.doc(user.uid).collection('products').get().then((snapshot) {
+    final result =
+        await cart.doc(user.uid).collection('products').get().then((snapshot) {
       for (DocumentSnapshot ds in snapshot.docs) {
         ds.reference.delete();
       }
@@ -70,4 +76,8 @@ class CartServices {
     return snapshot.exists ? snapshot.data()['shopName'] : null;
   }
 
+  Future<DocumentSnapshot> getShopName() async {
+    DocumentSnapshot doc = await cart.doc(user.uid).get();
+    return doc;
+  }
 }
