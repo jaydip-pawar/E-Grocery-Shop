@@ -8,10 +8,13 @@ class CartCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    double saving = document.data()['comparedPrice'] - document.data()['price'];
     return Container(
       height: 120,
       decoration: BoxDecoration(
-          border: Border(bottom: BorderSide(color: Colors.grey[300]))),
+        border: Border(bottom: BorderSide(color: Colors.grey[300])),
+        color: Colors.white,
+      ),
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Stack(
@@ -58,11 +61,29 @@ class CartCard extends StatelessWidget {
                 )
               ],
             ),
-            // Positioned(child: CounterForCard(document))
+            Positioned(
+              right: 0.0,
+              bottom: 0.0,
+              child: CounterForCard(document),
+            ),
+            if(saving > 0)
+            Positioned(
+              child: CircleAvatar(
+                backgroundColor: Colors.redAccent,
+                child: FittedBox(
+                  child: Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: Text(
+                      '₹ ${saving.toStringAsFixed(0)}',
+                      style: TextStyle(color: Colors.white),
+                    ),
+                  ),
+                ),
+              ),
+            )
           ],
         ),
       ),
     );
   }
 }
-// 45-> 23.00

@@ -29,6 +29,7 @@ class _CartListState extends State<CartList> {
         }
 
         return new ListView(
+          padding: EdgeInsets.zero,
           shrinkWrap: true,
           children: snapshot.data.docs.map((DocumentSnapshot document) {
             return new CartCard(document: document,);
