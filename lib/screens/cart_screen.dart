@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_grocery/model/store_services.dart';
 import 'package:e_grocery/model/user_services.dart';
+import 'package:e_grocery/providers/authentication_provider.dart';
 import 'package:e_grocery/providers/cart_provider.dart';
 import 'package:e_grocery/providers/location_provider.dart';
 import 'package:e_grocery/screens/map_screen.dart';
@@ -10,6 +11,7 @@ import 'package:e_grocery/widgets/cart/cod_toggle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -62,6 +64,8 @@ class _CartScreenState extends State<CartScreen> {
   Widget build(BuildContext context) {
     final locationData = Provider.of<LocationProvider>(context);
     var _cartProvider = Provider.of<CartProvider>(context);
+    var userDetails = Provider.of<AuthenticationProvider>(context);
+    userDetails.getUserDetails();
     var _payable = _cartProvider.subTotal + deliveryFee - discount;
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -120,7 +124,11 @@ class _CartScreenState extends State<CartScreen> {
                       ],
                     ),
                     Text(
-                      '$_location, $_address',
+                      userDetails.snapshot == null
+                          ? '$_address'
+                          : userDetails.snapshot.data()['firstName'] == null || userDetails.snapshot.data()['lastName'] == null
+                          ? '$_address'
+                          : '${userDetails.snapshot.data()['firstName']} ${userDetails.snapshot.data()['lastName']} : $_address',
                       maxLines: 3,
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
@@ -162,14 +170,10 @@ class _CartScreenState extends State<CartScreen> {
                       style:
                           ElevatedButton.styleFrom(primary: Colors.redAccent),
                       onPressed: () {
-                        setState(() {
-                          _checkingUser = true;
-                        });
+                        EasyLoading.show(status: 'Please wait...');
                         _userServices.getUserById(user.uid).then((value) {
                           if(value.data()['userName']  == null) {
-                            setState(() {
-                              _checkingUser = false;
-                            });
+                            EasyLoading.dismiss();
                             pushNewScreen(
                               context,
                               screen: ProfileScreen(),
@@ -177,9 +181,7 @@ class _CartScreenState extends State<CartScreen> {
                                   .cupertino,
                             );
                           } else {
-                            setState(() {
-                              _checkingUser = false;
-                            });
+                            EasyLoading.dismiss();
                             if(_cartProvider.cod == true) {
                               print("Cash on delivery");
                             } else {

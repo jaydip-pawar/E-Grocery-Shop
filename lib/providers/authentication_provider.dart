@@ -13,6 +13,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 class AuthenticationProvider with ChangeNotifier {
   final firestoreInstance = FirebaseFirestore.instance;
   var firebaseUser = FirebaseAuth.instance.currentUser;
+  DocumentSnapshot snapshot;
 
   void login(
       String email, String password, BuildContext context) async {
@@ -139,5 +140,13 @@ class AuthenticationProvider with ChangeNotifier {
   Future<void> savePrefs(String name) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     prefs.setString("user_name", name);
+  }
+
+  Future<DocumentSnapshot> getUserDetails() async {
+    DocumentSnapshot result = await FirebaseFirestore.instance.collection('customer').doc(firebaseUser.uid).get();
+    this.snapshot = result;
+    notifyListeners();
+
+    return result;
   }
 }
