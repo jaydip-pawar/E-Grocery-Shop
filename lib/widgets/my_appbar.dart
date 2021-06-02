@@ -48,16 +48,17 @@ class _MyAppBarState extends State<MyAppBar> {
       snap: true,
       title: TextButton(
         onPressed: () {
-          locationData.getCurrentPosition();
-          if (locationData.permissionAllowed == true)
-            pushNewScreen(
-              context,
-              screen: MapScreen(),
-              withNavBar: false,
-              pageTransitionAnimation: PageTransitionAnimation.cupertino,
-            );
-          else
-            print("Permission not allowed");
+          locationData.getCurrentPosition().then((value) {
+            if (value != null)
+              pushNewScreen(
+                context,
+                screen: MapScreen(),
+                withNavBar: false,
+                pageTransitionAnimation: PageTransitionAnimation.cupertino,
+              );
+            else
+              print("Permission not allowed");
+          });
         },
         child: Column(
           mainAxisSize: MainAxisSize.min,

@@ -45,6 +45,7 @@ dependencies:
   map_launcher: ^2.0.0
   expandable_text: 2.2.0
   flutter_easyloading: ^3.0.0
+  toggle_bar: ^1.0.0
 
 
   # The following adds the Cupertino Icons font to your application.

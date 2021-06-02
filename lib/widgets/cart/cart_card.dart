@@ -73,9 +73,17 @@ class CartCard extends StatelessWidget {
                 child: FittedBox(
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
-                    child: Text(
-                      '₹ ${saving.toStringAsFixed(0)}',
-                      style: TextStyle(color: Colors.white),
+                    child: Column(
+                      children: [
+                        Text(
+                          '₹ ${saving.toStringAsFixed(0)}',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        Text(
+                          'SAVED',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                      ],
                     ),
                   ),
                 ),

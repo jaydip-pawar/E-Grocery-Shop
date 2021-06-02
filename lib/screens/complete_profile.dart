@@ -21,6 +21,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
   PickedFile _imageFile;
   String _downloadLink;
   final ImagePicker _picker = ImagePicker();
+  bool _loading = false;
 
   showBottomSheet() {
     showModalBottomSheet(
@@ -57,7 +58,7 @@ class _CompleteProfileState extends State<CompleteProfile> {
             SizedBox(height: 40),
             nameField(),
             SizedBox(height: 25),
-            submitButton(),
+            _loading ? Center(child: CircularProgressIndicator(),) : submitButton(),
             SizedBox(height: 25),
             logoutButton(),
           ],
@@ -228,6 +229,9 @@ class _CompleteProfileState extends State<CompleteProfile> {
       width: double.infinity,
       child: MaterialButton(
         onPressed: () {
+          setState(() {
+            _loading = true;
+          });
           Utility.saveImageToPreferences(Utility.base64String(File(_imageFile.path).readAsBytesSync()));
           authentication.uploadProfilePic(_imageFile, _userNameController.text);
           authentication.savePrefs(_userNameController.text);

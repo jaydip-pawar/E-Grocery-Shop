@@ -8,6 +8,8 @@ class CartProvider with ChangeNotifier {
   int cartQty = 0;
   QuerySnapshot snapshot;
   double saving = 0.0;
+  double distance = 0.0;
+  bool cod = false;
 
   Future<double> getCartTotal() async {
     var cartTotal = 0.0;
@@ -32,5 +34,19 @@ class CartProvider with ChangeNotifier {
     notifyListeners();
 
     return cartTotal;
+  }
+
+  getDistance(distance) {
+    this.distance = distance;
+  }
+
+  getPaymentMethod(index) {
+    if(index == 0) {
+      this.cod = false;
+      notifyListeners();
+    } else {
+      this.cod = true;
+      notifyListeners();
+    }
   }
 }

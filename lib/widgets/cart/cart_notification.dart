@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_grocery/model/cart_services.dart';
 import 'package:e_grocery/providers/cart_provider.dart';
 import 'package:e_grocery/screens/cart_screen.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
@@ -20,6 +21,9 @@ class _CartNotificationState extends State<CartNotification> {
   @override
   Widget build(BuildContext context) {
 
+    FirebaseAuth _auth = FirebaseAuth.instance;
+    User _user = _auth.currentUser;
+
     final _cartProvider = Provider.of<CartProvider>(context);
     _cartProvider.getCartTotal();
     _cart.getShopName().then((value) {
@@ -29,7 +33,7 @@ class _CartNotificationState extends State<CartNotification> {
     });
 
     return Visibility(
-      visible: _cartProvider.cartQty > 0 ? true : false,
+      visible: _user.uid == null ? false : _cartProvider.distance <= 10 ? _cartProvider.cartQty > 0 ? true : false : false,
       child: Container(
         height: 45,
         width: MediaQuery.of(context).size.width,
