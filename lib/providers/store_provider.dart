@@ -36,11 +36,9 @@ class StoreProvider with ChangeNotifier {
   Future<void> getUserLocationData() async {
     _userServices.getUserById(user.uid).then((result) {
       if (user != null) {
-        if(result.data() == null || result.data().length == 0) {
-          this.userLatitude = result.data()['latitude'];
-          this.userLongitude = result.data()['longitude'];
-          notifyListeners();
-        }
+        this.userLatitude = result.data()['latitude'];
+        this.userLongitude = result.data()['longitude'];
+        notifyListeners();
       } else {
         print("User not authenticated...");
       }
