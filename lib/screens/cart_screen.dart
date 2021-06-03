@@ -4,7 +4,9 @@ import 'package:e_grocery/model/user_services.dart';
 import 'package:e_grocery/providers/authentication_provider.dart';
 import 'package:e_grocery/providers/cart_provider.dart';
 import 'package:e_grocery/providers/location_provider.dart';
+import 'package:e_grocery/providers/order_provider.dart';
 import 'package:e_grocery/screens/map_screen.dart';
+import 'package:e_grocery/screens/payment/stripe/stripe_home.dart';
 import 'package:e_grocery/screens/profile_screen.dart';
 import 'package:e_grocery/widgets/cart/cart_list.dart';
 import 'package:e_grocery/widgets/cart/cod_toggle.dart';
@@ -67,6 +69,7 @@ class _CartScreenState extends State<CartScreen> {
     var userDetails = Provider.of<AuthenticationProvider>(context);
     userDetails.getUserDetails();
     var _payable = _cartProvider.subTotal + deliveryFee - discount;
+    final orderProvider = Provider.of<OrderProvider>(context);
     return Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Colors.grey[200],
@@ -176,7 +179,7 @@ class _CartScreenState extends State<CartScreen> {
                             EasyLoading.dismiss();
                             pushNewScreen(
                               context,
-                              screen: ProfileScreen(),
+                              screen: StripeHome(),
                               pageTransitionAnimation: PageTransitionAnimation
                                   .cupertino,
                             );
@@ -185,7 +188,12 @@ class _CartScreenState extends State<CartScreen> {
                             if(_cartProvider.cod == true) {
                               print("Cash on delivery");
                             } else {
-                              print("Will pay online");
+                              orderProvider.totalAmount(_payable);
+                              Navigator.push(context, MaterialPageRoute(builder: (_) => StripeHome())).whenComplete(() {
+                                if(orderProvider.success == true) {
+                                  print("Successful");
+                                }
+                              });
                             }
                           }
                         });

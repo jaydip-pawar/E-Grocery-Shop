@@ -1,6 +1,7 @@
 import 'package:e_grocery/providers/authentication_provider.dart';
 import 'package:e_grocery/providers/cart_provider.dart';
 import 'package:e_grocery/providers/location_provider.dart';
+import 'package:e_grocery/providers/order_provider.dart';
 import 'package:e_grocery/providers/store_provider.dart';
 import 'package:e_grocery/screens/splash_screen.dart';
 import 'package:e_grocery/theme.dart';
@@ -24,6 +25,9 @@ void main() {
         ),
         ChangeNotifierProvider(
           create: (_) => CartProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => OrderProvider(),
         ),
       ],
       child: MyApp(),
