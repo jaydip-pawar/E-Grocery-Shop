@@ -1,3 +1,4 @@
+import 'package:e_grocery/model/cart_services.dart';
 import 'package:e_grocery/screens/payment/stripe/existing-cards.dart';
 import 'package:e_grocery/services/payment/stripe_payment_service.dart';
 import 'package:flutter/material.dart';
@@ -25,20 +26,32 @@ class StripeHomeState extends State<StripeHome> {
 
   payViaNewCard(BuildContext context) async {
     await EasyLoading.show(status: 'Please wait...');
-    var response =
-        await StripeService.payWithNewCard(amount: '15000', currency: 'INR');
+    // var response =
+    //     await StripeService.payWithNewCard(amount: '15000', currency: 'INR');
     await EasyLoading.dismiss();
-    ScaffoldMessenger.of(context).showSnackBar(SnackBar(
-      content: Text(response.message),
-      duration:
-          new Duration(milliseconds: response.success == true ? 1200 : 3000),
-    ));
+    // ScaffoldMessenger.of(context).showSnackBar(
+    //   SnackBar(
+    //     content: Text(response.message),
+    //     duration:
+    //         new Duration(milliseconds: response.success == true ? 1200 : 3000),
+    //   ),
+    // ).closed.then((_) async {
+    //   EasyLoading.show(status: "Please wait...");
+    //   var cartServices = CartServices();
+    //   cartServices.deleteCart().whenComplete(() {
+    //     EasyLoading.showSuccess("Your Order arrive within 2 hours.");
+    //     Navigator.pop(context);
+    //     Navigator.pop(context);
+    //     Navigator.pop(context);
+    //     // Navigator.pop(context);
+    //   });
+    // });
   }
 
   @override
   void initState() {
     super.initState();
-    StripeService.init();
+    // StripeService.init();
   }
 
   @override
@@ -108,7 +121,8 @@ class StripeHomeState extends State<StripeHome> {
                       text = Text('Add Cards');
                       break;
                     case 1:
-                      icon = Icon(Icons.payment_outlined, color: theme.primaryColor);
+                      icon = Icon(Icons.payment_outlined,
+                          color: theme.primaryColor);
                       text = Text('Pay via new card');
                       break;
                     case 2:

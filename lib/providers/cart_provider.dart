@@ -20,10 +20,10 @@ class CartProvider with ChangeNotifier {
       return null;
     }
     snapshot.docs.forEach((doc) {
-      cartTotal = cartTotal + doc.data()['total'];
+      cartTotal = cartTotal + doc.get('total');
       saving =
-          saving + ((doc.data()['comparedPrice'] - doc.data()['price']) > 0
-              ? doc.data()['comparedPrice'] - doc.data()['price']
+          saving + ((doc.get('comparedPrice') - doc.get('price')) > 0
+              ? doc.get('comparedPrice') - doc.get('price')
               : 0);
     });
 

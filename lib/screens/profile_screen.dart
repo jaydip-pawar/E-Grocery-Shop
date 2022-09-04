@@ -1,10 +1,8 @@
 import 'package:e_grocery/providers/authentication_provider.dart';
 import 'package:e_grocery/providers/location_provider.dart';
-import 'package:e_grocery/screens/home_screen.dart';
 import 'package:e_grocery/screens/login_screen.dart';
 import 'package:e_grocery/screens/map_screen.dart';
 import 'package:e_grocery/screens/profile_update_screen.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -17,7 +15,6 @@ class ProfileScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final authentication = Provider.of<AuthenticationProvider>(context);
     final location = Provider.of<LocationProvider>(context);
-    User user = FirebaseAuth.instance.currentUser;
     authentication.getUserDetails();
     return Scaffold(
       appBar: AppBar(
@@ -71,13 +68,13 @@ class ProfileScreen extends StatelessWidget {
                                     authentication.snapshot == null
                                         ? "Set name first"
                                         : authentication.snapshot
-                                                        .data()['firstName'] ==
+                                                        .get('firstName') ==
                                                     null &&
                                                 authentication.snapshot
-                                                        .data()['lastName'] ==
+                                                        .get('lastName') ==
                                                     null
                                             ? "Set name first"
-                                            : '${authentication.snapshot.data()['firstName']} ${authentication.snapshot.data()['lastName']}',
+                                            : '${authentication.snapshot.get('firstName')} ${authentication.snapshot.get('lastName')}',
                                     style: TextStyle(
                                       fontWeight: FontWeight.bold,
                                       fontSize: 18,
@@ -88,11 +85,11 @@ class ProfileScreen extends StatelessWidget {
                                     authentication.snapshot == null
                                         ? "Set email first"
                                         : authentication.snapshot
-                                                    .data()['email'] ==
+                                                    .get('email') ==
                                                 null
                                             ? "Set email first"
                                             : authentication.snapshot
-                                                .data()['email'],
+                                                .get('email'),
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.white,
@@ -102,11 +99,11 @@ class ProfileScreen extends StatelessWidget {
                                     authentication.snapshot == null
                                         ? "Set number first"
                                         : authentication.snapshot
-                                                    .data()['mobile'] ==
+                                                    .get('mobile') ==
                                                 null
                                             ? "Set number first"
                                             : authentication.snapshot
-                                                .data()['mobile'],
+                                                .get('mobile'),
                                     style: TextStyle(
                                       fontSize: 14,
                                       color: Colors.white,
@@ -128,9 +125,9 @@ class ProfileScreen extends StatelessWidget {
                               color: Colors.redAccent,
                             ),
                             title: Text(authentication.snapshot
-                                .data()['street_address']),
+                                .get('street_address')),
                             subtitle: Text(
-                              authentication.snapshot.data()['address'],
+                              authentication.snapshot.get('address'),
                               maxLines: 1,
                             ),
                             trailing: OutlinedButton(

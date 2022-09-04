@@ -73,7 +73,7 @@ class _CartNotificationState extends State<CartNotification> {
                     ),
                     if(document != null)
                       Text(
-                        '${document.data() == null ? '' : 'From ${document.data()['shopName']}'}',
+                        '${document.data() == null ? '' : 'From ${document.get('shopName')}'}',
                         style: TextStyle(color: Colors.white, fontSize: 10),
                       )
                   ],
@@ -81,6 +81,7 @@ class _CartNotificationState extends State<CartNotification> {
               ),
               InkWell(
                 onTap: () {
+                  print(document.data().toString());
                   pushNewScreen(
                     context,
                     screen: CartScreen(

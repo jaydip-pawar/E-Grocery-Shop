@@ -11,8 +11,8 @@ class ProductDetailsScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var offer = ((document.data()['comparedPrice'] - document.data()['price']) /
-            document.data()['comparedPrice']) *
+    var offer = ((document.get('comparedPrice') - document.get('price')) /
+            document.get('comparedPrice')) *
         100;
 
     return Scaffold(
@@ -38,7 +38,7 @@ class ProductDetailsScreen extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.only(
                         left: 8, right: 8, bottom: 2, top: 2),
-                    child: Text(document.data()['brand']),
+                    child: Text(document.get('brand')),
                   ),
                 ),
               ],
@@ -47,20 +47,20 @@ class ProductDetailsScreen extends StatelessWidget {
               height: 10,
             ),
             Text(
-              document.data()['productName'],
+              document.get('productName'),
               style: TextStyle(fontSize: 22),
             ),
             SizedBox(
               height: 10,
             ),
             Text(
-              document.data()['weight'],
+              document.get('weight'),
               style: TextStyle(fontSize: 20),
             ),
             Row(
               children: [
                 Text(
-                  '₹${document.data()['price'].toStringAsFixed(0)}',
+                  '₹${document.get('price').toStringAsFixed(0)}',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
@@ -71,7 +71,7 @@ class ProductDetailsScreen extends StatelessWidget {
                 ),
                 if (offer > 0)
                   Text(
-                    '₹${document.data()['comparedPrice']}',
+                    '₹${document.get('comparedPrice')}',
                     style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.bold,
@@ -107,7 +107,7 @@ class ProductDetailsScreen extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.all(20.0),
               child: Image.network(
-                document.data()['productImage'],
+                document.get('productImage'),
               ),
             ),
             Divider(
@@ -128,7 +128,7 @@ class ProductDetailsScreen extends StatelessWidget {
               padding:
                   const EdgeInsets.only(top: 8, bottom: 8, left: 10, right: 10),
               child: ExpandableText(
-                document.data()['description'],
+                document.get('description'),
                 expandText: 'View more',
                 collapseText: 'View less',
                 maxLines: 2,
@@ -152,11 +152,11 @@ class ProductDetailsScreen extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    'SKU :  ${document.data()['sku']}',
+                    'SKU :  ${document.get('sku')}',
                     style: TextStyle(color: Colors.grey),
                   ),
                   Text(
-                    'Seller :  ${document.data()['seller']['shopName']}',
+                    'Seller :  ${document.get('seller')['shopName']}',
                     style: TextStyle(color: Colors.grey),
                   ),
                 ],

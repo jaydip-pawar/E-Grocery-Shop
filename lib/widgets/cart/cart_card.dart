@@ -8,7 +8,7 @@ class CartCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    double saving = document.data()['comparedPrice'] - document.data()['price'];
+    double saving = document.get('comparedPrice') - document.get('price');
     return Container(
       height: 120,
       decoration: BoxDecoration(
@@ -27,7 +27,7 @@ class CartCard extends StatelessWidget {
                   child: Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: Image.network(
-                      document.data()['productImage'],
+                      document.get('productImage'),
                       fit: BoxFit.contain,
                     ),
                   ),
@@ -36,24 +36,24 @@ class CartCard extends StatelessWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(document.data()['productName']),
+                      Text(document.get('productName')),
                       Text(
-                        document.data()['weight'],
+                        document.get('weight'),
                         style: TextStyle(color: Colors.grey),
                       ),
                       SizedBox(
                         height: 20,
                       ),
-                      if (document.data()['comparedPrice'] > 0)
+                      if (document.get('comparedPrice') > 0)
                         Text(
-                          document.data()['comparedPrice'].toString(),
+                          document.get('comparedPrice').toString(),
                           style: TextStyle(
                             decoration: TextDecoration.lineThrough,
                             fontSize: 12,
                           ),
                         ),
                       Text(
-                        document.data()['price'].toStringAsFixed(0),
+                        document.get('price').toStringAsFixed(0),
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
                     ],

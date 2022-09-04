@@ -18,14 +18,13 @@ class _LandingScreenState extends State<LandingScreen> {
   User user = FirebaseAuth.instance.currentUser;
   String _location;
   String _address;
-  bool _loading = true;
 
   @override
   void initState() {
     UserServices _userServices = UserServices();
     _userServices.getUserById(user.uid).then((result) async {
       if (result != null) {
-        if (result.data()['latitude'] != null) {
+        if (result.get('latitude') != null) {
           getPrefs(result);
         } else {
           _locationProvider.getCurrentPosition();
@@ -51,7 +50,6 @@ class _LandingScreenState extends State<LandingScreen> {
         setState(() {
           _location = dbResult.data()['street_address'];
           _address = dbResult.data()['address'];
-          _loading = false;
         });
       }
       Navigator.pushReplacement(

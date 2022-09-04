@@ -11,8 +11,8 @@ class ProductCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String offer =
-        ((document.data()['comparedPrice'] - document.data()['price']) /
-                document.data()['comparedPrice'] *
+        ((document.get('comparedPrice') - document.get('price')) /
+                document.get('comparedPrice') *
                 100)
             .toStringAsFixed(0);
 
@@ -48,12 +48,12 @@ class ProductCard extends StatelessWidget {
                       width: 130,
                       child: ClipRRect(
                         borderRadius: BorderRadius.circular(10),
-                        child: Image.network(document.data()['productImage']),
+                        child: Image.network(document.get('productImage')),
                       ),
                     ),
                   ),
                 ),
-                if (document.data()['comparedPrice'] > 0)
+                if (document.get('comparedPrice') > 0)
                   Container(
                     decoration: BoxDecoration(
                       color: Theme.of(context).primaryColor,
@@ -87,14 +87,14 @@ class ProductCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          document.data()['brand'],
+                          document.get('brand'),
                           style: TextStyle(fontSize: 10),
                         ),
                         SizedBox(
                           height: 6,
                         ),
                         Text(
-                          document.data()['productName'],
+                          document.get('productName'),
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                           ),
@@ -111,7 +111,7 @@ class ProductCard extends StatelessWidget {
                             color: Colors.grey[200],
                           ),
                           child: Text(
-                            document.data()['weight'],
+                            document.get('weight'),
                             style: TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -125,7 +125,7 @@ class ProductCard extends StatelessWidget {
                         Row(
                           children: [
                             Text(
-                              "₹${document.data()['price'].toStringAsFixed(0)}",
+                              "₹${document.get('price').toStringAsFixed(0)}",
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                               ),
@@ -133,9 +133,9 @@ class ProductCard extends StatelessWidget {
                             SizedBox(
                               width: 10,
                             ),
-                            if (document.data()['comparedPrice'] > 0)
+                            if (document.get('comparedPrice') > 0)
                               Text(
-                                "₹${document.data()['comparedPrice'].toStringAsFixed(0)}",
+                                "₹${document.get('comparedPrice').toStringAsFixed(0)}",
                                 style: TextStyle(
                                   decoration: TextDecoration.lineThrough,
                                   fontWeight: FontWeight.bold,

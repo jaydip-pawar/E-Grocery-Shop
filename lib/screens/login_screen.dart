@@ -1,6 +1,5 @@
 import 'package:e_grocery/providers/authentication_provider.dart';
 import 'package:e_grocery/screens/signup_screen.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 

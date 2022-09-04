@@ -26,10 +26,10 @@ class _UpdateProfileState extends State<UpdateProfile> {
     _user.getUserById(user.uid).then((value) {
       if(mounted) {
         setState(() {
-          firstName.text = value.data()['firstName'];
-          lastName.text = value.data()['lastName'];
-          email.text = value.data()['email'];
-          mobile.text = value.data()['mobile'];
+          firstName.text = value.get('firstName');
+          lastName.text = value.get('lastName');
+          email.text = value.get('email');
+          mobile.text = value.get('mobile');
         });
       }
     });

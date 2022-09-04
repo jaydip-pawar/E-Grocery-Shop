@@ -18,6 +18,7 @@ class NearByStore extends StatefulWidget {
 }
 
 class _NearByStoreState extends State<NearByStore> {
+  GlobalKey<FormState> _pKey = GlobalKey<FormState>();
   StoreServices _storeServices = StoreServices();
   PaginateRefreshedChangeListener refreshedChangeListener =
       PaginateRefreshedChangeListener();
@@ -127,35 +128,37 @@ class _NearByStoreState extends State<NearByStore> {
                             Theme.of(context).primaryColor),
                       ),
                     ),
-                    header: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding:
-                              const EdgeInsets.only(left: 8, right: 8, top: 20),
-                          child: Text(
-                            "All Nearby Stores",
-                            style: TextStyle(
-                                fontWeight: FontWeight.w900, fontSize: 18),
-                          ),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(
-                              left: 8, right: 8, bottom: 10),
-                          child: Text(
-                            "Findout quality products near you",
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: Colors.grey,
+                    header: SliverToBoxAdapter(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding:
+                            const EdgeInsets.only(left: 8, right: 8, top: 20),
+                            child: Text(
+                              "All Nearby Stores",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.w900, fontSize: 18),
                             ),
                           ),
-                        ),
-                      ],
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                left: 8, right: 8, bottom: 10),
+                            child: Text(
+                              "Findout quality products near you",
+                              style: TextStyle(
+                                fontSize: 12,
+                                color: Colors.grey,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ),
                     shrinkWrap: true,
                     physics: NeverScrollableScrollPhysics(),
                     itemBuilderType: PaginateBuilderType.listView,
-                    itemBuilder: (index, context, document) => Padding(
+                    itemBuilder: (context, document, index) => Padding(
                       padding: const EdgeInsets.all(4),
                       child: Container(
                         width: MediaQuery.of(context).size.width,
@@ -169,7 +172,7 @@ class _NearByStoreState extends State<NearByStore> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(4),
                                   child: Image.network(
-                                    document['profile_pic'],
+                                    document[index].get('profile_pic'),
                                     fit: BoxFit.cover,
                                   ),
                                 ),
@@ -182,7 +185,7 @@ class _NearByStoreState extends State<NearByStore> {
                               children: [
                                 Container(
                                   child: Text(
-                                    document.data()['shop_name'],
+                                    document[index].get('shop_name'),
                                     style: TextStyle(
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold),
@@ -192,22 +195,22 @@ class _NearByStoreState extends State<NearByStore> {
                                 ),
                                 SizedBox(height: 3),
                                 Text(
-                                  document.data()['dialog'],
+                                  document[index].get('dialog'),
                                   style: kStoreCardStyle,
                                 ),
                                 SizedBox(height: 3),
                                 Container(
                                   width:
-                                      MediaQuery.of(context).size.width - 250,
+                                  MediaQuery.of(context).size.width - 250,
                                   child: Text(
-                                    document.data()['address'],
+                                    document[index].get('address'),
                                     overflow: TextOverflow.ellipsis,
                                     style: kStoreCardStyle,
                                   ),
                                 ),
                                 SizedBox(height: 3),
                                 Text(
-                                  "${getDistance(document['location'])}km",
+                                  "${getDistance(document[index].get('location'))}km",
                                   overflow: TextOverflow.ellipsis,
                                   style: kStoreCardStyle,
                                 ),
@@ -236,48 +239,50 @@ class _NearByStoreState extends State<NearByStore> {
                     listeners: [
                       refreshedChangeListener,
                     ],
-                    footer: Padding(
-                      padding: const EdgeInsets.only(top: 30),
-                      child: Container(
-                        child: Stack(
-                          children: [
-                            Center(
-                              child: Text(
-                                "**That\'s all folks**",
-                                style: TextStyle(
-                                  color: Colors.grey,
+                    footer: SliverToBoxAdapter(
+                      child: Padding(
+                        padding: const EdgeInsets.only(top: 30),
+                        child: Container(
+                          child: Stack(
+                            children: [
+                              Center(
+                                child: Text(
+                                  "**That\'s all folks**",
+                                  style: TextStyle(
+                                    color: Colors.grey,
+                                  ),
                                 ),
                               ),
-                            ),
-                            Image.asset(
-                              "assets/images/city.png",
-                              color: Colors.black12,
-                            ),
-                            Positioned(
-                              right: 10,
-                              top: 80,
-                              child: Container(
-                                width: 100,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      "Made by: ",
-                                      style: TextStyle(color: Colors.black54),
-                                    ),
-                                    Text(
-                                      "Prajyot",
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        letterSpacing: 2,
-                                        color: Colors.grey,
+                              Image.asset(
+                                "assets/images/city.png",
+                                color: Colors.black12,
+                              ),
+                              Positioned(
+                                right: 10,
+                                top: 80,
+                                child: Container(
+                                  width: 100,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    children: [
+                                      Text(
+                                        "Made by: ",
+                                        style: TextStyle(color: Colors.black54),
                                       ),
-                                    ),
-                                  ],
+                                      Text(
+                                        "Jaydip",
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          letterSpacing: 2,
+                                          color: Colors.grey,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
-                            ),
-                          ],
+                            ],
+                          ),
                         ),
                       ),
                     ),

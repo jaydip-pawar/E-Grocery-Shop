@@ -7,11 +7,9 @@ import 'package:e_grocery/providers/location_provider.dart';
 import 'package:e_grocery/providers/order_provider.dart';
 import 'package:e_grocery/screens/map_screen.dart';
 import 'package:e_grocery/screens/payment/stripe/stripe_home.dart';
-import 'package:e_grocery/screens/profile_screen.dart';
 import 'package:e_grocery/widgets/cart/cart_list.dart';
 import 'package:e_grocery/widgets/cart/cod_toggle.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -34,7 +32,6 @@ class _CartScreenState extends State<CartScreen> {
   var textStyle = TextStyle(color: Colors.grey);
   int discount = 50;
   int deliveryFee = 50;
-  String _location = "";
   String _address = "";
   bool _loading = false;
   bool _checkingUser = false;
@@ -42,7 +39,7 @@ class _CartScreenState extends State<CartScreen> {
   @override
   void initState() {
     getPrefs();
-    _store.getShopDetails(widget.document.data()['sellerUid']).then((value) {
+    _store.getShopDetails(widget.document.get('sellerUid')).then((value) {
       setState(() {
         doc = value;
       });
@@ -57,7 +54,6 @@ class _CartScreenState extends State<CartScreen> {
     String address = prefs.getString("address");
     print(address);
     setState(() {
-      _location = location;
       _address = address;
     });
   }
@@ -129,9 +125,9 @@ class _CartScreenState extends State<CartScreen> {
                     Text(
                       userDetails.snapshot == null
                           ? '$_address'
-                          : userDetails.snapshot.data()['firstName'] == null || userDetails.snapshot.data()['lastName'] == null
+                          : userDetails.snapshot.get('firstName') == null || userDetails.snapshot.get('lastName') == null
                           ? '$_address'
-                          : '${userDetails.snapshot.data()['firstName']} ${userDetails.snapshot.data()['lastName']} : $_address',
+                          : '${userDetails.snapshot.get('firstName')} ${userDetails.snapshot.get('lastName')} : $_address',
                       maxLines: 3,
                       style: TextStyle(color: Colors.grey, fontSize: 12),
                     ),
@@ -175,7 +171,7 @@ class _CartScreenState extends State<CartScreen> {
                       onPressed: () {
                         EasyLoading.show(status: 'Please wait...');
                         _userServices.getUserById(user.uid).then((value) {
-                          if(value.data()['userName']  == null) {
+                          if(value.get('userName')  == null) {
                             EasyLoading.dismiss();
                             pushNewScreen(
                               context,
@@ -218,7 +214,7 @@ class _CartScreenState extends State<CartScreen> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    widget.document.data()['shopName'],
+                    widget.document.get('shopName'),
                     style: TextStyle(fontSize: 16),
                   ),
                   Row(
@@ -265,14 +261,14 @@ class _CartScreenState extends State<CartScreen> {
                                   child: ClipRRect(
                                     borderRadius: BorderRadius.circular(4),
                                     child: Image.network(
-                                      doc.data()['profile_pic'],
+                                      doc.get('profile_pic'),
                                       fit: BoxFit.cover,
                                     ),
                                   ),
                                 ),
-                                title: Text(doc.data()['shop_name']),
+                                title: Text(doc.get('shop_name')),
                                 subtitle: Text(
-                                  doc.data()['address'],
+                                  doc.get('address'),
                                   maxLines: 1,
                                   style: TextStyle(
                                     fontSize: 12,

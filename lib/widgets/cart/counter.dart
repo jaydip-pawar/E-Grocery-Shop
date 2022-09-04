@@ -29,11 +29,11 @@ class _CounterForCardState extends State<CounterForCard> {
         .collection('cart')
         .doc(user.uid)
         .collection('products')
-        .where('productId', isEqualTo: widget.document.data()['productId'])
+        .where('productId', isEqualTo: widget.document.get('productId'))
         .get()
         .then((QuerySnapshot querySnapshot) => {
               querySnapshot.docs.forEach((doc) {
-                if (doc['productId'] == widget.document.data()['productId']) {
+                if (doc['productId'] == widget.document.get('productId')) {
                   setState(() {
                     _exists = true;
                     _qty = doc["qty"];
@@ -72,7 +72,7 @@ class _CounterForCardState extends State<CounterForCard> {
                       setState(() {
                         _qty--;
                       });
-                      var total = _qty * widget.document.data()['price'];
+                      var total = _qty * widget.document.get('price');
                       _cart.updateCartQty(_docId, _qty, total).then((value) {
                         setState(() {
                           _updating = false;
@@ -114,7 +114,7 @@ class _CounterForCardState extends State<CounterForCard> {
                       _updating = true;
                       _qty++;
                     });
-                    var total = _qty * widget.document.data()['price'];
+                    var total = _qty * widget.document.get('price');
                     _cart.updateCartQty(_docId, _qty, total).then((value) {
                       setState(() {
                         _updating = false;
@@ -135,7 +135,7 @@ class _CounterForCardState extends State<CounterForCard> {
             onTap: () {
               EasyLoading.show(status: 'Adding to Cart');
               _cart.checkSeller().then((shopName) {
-                if (shopName == widget.document.data()['seller']['shopName']) {
+                if (shopName == widget.document.get('seller')['shopName']) {
                   setState(() {
                     _exists = true;
                   });
@@ -156,7 +156,7 @@ class _CounterForCardState extends State<CounterForCard> {
                   });
                   return;
                 }
-                if (shopName != widget.document.data()['seller']['shopName']) {
+                if (shopName != widget.document.get('seller')['shopName']) {
                   EasyLoading.dismiss();
                   showDialog(shopName);
                 }
@@ -185,7 +185,7 @@ class _CounterForCardState extends State<CounterForCard> {
         return CupertinoAlertDialog(
           title: Text('Replace Cart Item?'),
           content: Text(
-              'Your cart contains items from $shopName. Do you want to discard the selection and add items from ${widget.document.data()['seller']['shopName']}'),
+              'Your cart contains items from $shopName. Do you want to discard the selection and add items from ${widget.document.get('seller')['shopName']}'),
           actions: [
             TextButton(
               onPressed: () {

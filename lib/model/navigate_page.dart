@@ -46,16 +46,11 @@ class _NavigatePageState extends State<NavigatePage> {
         if (userSnapshot.hasData) {
           _uid = FirebaseAuth.instance.currentUser.uid;
           return FutureBuilder(
-            future: Future.wait([FirebaseFirestore.instance.collection("customer").doc(_uid).get()]),
+            future: FirebaseFirestore.instance.collection("customer").doc(_uid).get(),
             builder: (BuildContext context, snapshot) {
               if (snapshot.hasData) {
-                DocumentSnapshot doc = snapshot.data[0];
-                if (doc.exists) {
-                  if(doc.data().length > 1) {
-                    if (doc["profile_pic"] != null && doc["user_name"] != null) {
-                      return MainScreen();
-                    }
-                  }
+                if (snapshot.data["profile_pic"] != null && snapshot.data["user_name"] != null) {
+                  return MainScreen();
                 }
                 return CompleteProfile();
               }

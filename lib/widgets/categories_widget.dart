@@ -2,7 +2,6 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:e_grocery/model/product_services.dart';
 import 'package:e_grocery/providers/store_provider.dart';
 import 'package:e_grocery/screens/product_list_screen.dart';
-import 'package:e_grocery/widgets/products/product_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
@@ -93,10 +92,10 @@ class _VendorCategoriesState extends State<VendorCategories> {
               Wrap(
                 direction: Axis.horizontal,
                 children: snapshot.data.docs.map((DocumentSnapshot document) {
-                  return _catList.contains(document.data()['name']) ?
+                  return _catList.contains(document.get('name')) ?
                       InkWell(
                         onTap: () {
-                          _storeProvider.selectedCategory(document.data()['name']);
+                          _storeProvider.selectedCategory(document.get('name'));
                           _storeProvider.selectedCategorySub(null);
                           pushNewScreen(
                             context,
@@ -121,11 +120,11 @@ class _VendorCategoriesState extends State<VendorCategories> {
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
                                 Center(
-                                  child: Image.network(document.data()['image']),
+                                  child: Image.network(document.get('image')),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8, right: 8),
-                                  child: Text(document.data()['name'], textAlign: TextAlign.center,),
+                                  child: Text(document.get('name'), textAlign: TextAlign.center,),
                                 )
                               ],
                             ),

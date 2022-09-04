@@ -8,6 +8,7 @@ import 'package:persistent_bottom_nav_bar/persistent-tab-view.dart';
 import 'package:provider/provider.dart';
 
 class TopPickStore extends StatefulWidget {
+  const TopPickStore({Key key}) : super(key: key);
 
   @override
   _TopPickStoreState createState() => _TopPickStoreState();

@@ -63,8 +63,7 @@ class CartServices {
   }
 
   Future<void> deleteCart() async {
-    final result =
-        await cart.doc(user.uid).collection('products').get().then((snapshot) {
+    await cart.doc(user.uid).collection('products').get().then((snapshot) {
       for (DocumentSnapshot ds in snapshot.docs) {
         ds.reference.delete();
       }
@@ -73,7 +72,7 @@ class CartServices {
 
   Future<String> checkSeller() async {
     final snapshot = await cart.doc(user.uid).get();
-    return snapshot.exists ? snapshot.data()['shopName'] : null;
+    return snapshot.exists ? snapshot.get('shopName') : null;
   }
 
   Future<DocumentSnapshot> getShopName() async {

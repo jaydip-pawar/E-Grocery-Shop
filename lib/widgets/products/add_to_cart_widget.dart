@@ -48,11 +48,11 @@ class _AddToCartWidgetState extends State<AddToCartWidget> {
         .collection('cart')
         .doc(user.uid)
         .collection('products')
-        .where('productId', isEqualTo: widget.document.data()['productId'])
+        .where('productId', isEqualTo: widget.document.get('productId'))
         .get()
         .then((QuerySnapshot querySnapshot) => {
               querySnapshot.docs.forEach((doc) {
-                if (doc['productId'] == widget.document.data()['productId']) {
+                if (doc['productId'] == widget.document.get('productId')) {
                   setState(() {
                     _exist = true;
                     _qty = doc["qty"];
